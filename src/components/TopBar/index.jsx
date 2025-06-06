@@ -143,7 +143,6 @@ function TopBar() {
           onClose={() => setUploadDialogOpen(false)}
           onSuccess={handlePhotoUploadSuccess}
           userId={currentUser._id}
-          advancedFeatures={advancedFeaturesEnabled}
         />
       )}
     </AppBar>
