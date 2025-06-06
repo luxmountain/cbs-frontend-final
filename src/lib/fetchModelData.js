@@ -1,12 +1,12 @@
 async function fetchModel(url, options = {}) {
   try {
-    const response = await fetch(`https://l3w7zl-8081.csb.app/api${url}`, {
-      credentials: "include",
-      ...options,
+    const response = await fetch(`http://localhost:8081/api${url}`, {
+      credentials: 'include', // Include cookies for session-based auth
+      ...options, // merge các tuỳ chọn như method, headers, body...
     });
 
     if (response.status === 401) {
-      window.dispatchEvent(new CustomEvent("unauthorized"));
+      window.dispatchEvent(new CustomEvent('unauthorized'));
       return null;
     }
 

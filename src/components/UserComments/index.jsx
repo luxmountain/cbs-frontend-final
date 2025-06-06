@@ -44,7 +44,7 @@ function UserComments() {
     return <Typography>Loading...</Typography>;
   }
 
-  const BACKEND_URL = "https://l3w7zl-8081.csb.app";
+  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   return (
     <Box className="user-comments" padding={2}>
