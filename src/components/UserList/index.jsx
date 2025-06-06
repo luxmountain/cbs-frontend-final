@@ -13,6 +13,7 @@ import {
   InputLabel,
   TextField,
   Typography,
+  Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import models from "../../modelData/models";
@@ -39,19 +40,20 @@ function UserList({ showBadges = false }) {
   }, []);
 
   const sortedUsers = [...users].sort((a, b) => {
-    if(sortOption === "post")
-      return (b.photoCount || 0) - (a.photoCount || 0);
-    else if(sortOption === "name")
+    if (sortOption === "post") return (b.photoCount || 0) - (a.photoCount || 0);
+    else if (sortOption === "name")
       return (a.first_name + " " + a.last_name).localeCompare(
         b.first_name + " " + b.last_name
-      )
+      );
     return 0;
-  })
+  });
 
   const filteredUsers = sortedUsers.filter(
-    (user) => 
+    (user) =>
       currentUser?._id !== user._id &&
-    `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchQuery.toLowerCase())
+      `${user.first_name} ${user.last_name}`
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
   );
 
   if (!filteredUsers.length) return <div>No users found.</div>;
@@ -141,6 +143,16 @@ function UserList({ showBadges = false }) {
           </React.Fragment>
         ))}
       </List>
+      {showBadges && (
+        <>
+          <div className="show-list-btn" onClick={() => navigate("/users")}>
+            <Button variant="outlined">User List</Button>
+          </div>
+          <div className="profile-btn" onClick={() => navigate("/profile")}>
+            <Button variant="contained">Profile</Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }
