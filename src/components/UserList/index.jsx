@@ -12,6 +12,7 @@ import {
   MenuItem,
   InputLabel,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import models from "../../modelData/models";
@@ -20,8 +21,10 @@ import { useAuth } from "../../context/AuthContext";
 
 function UserList({ showBadges = false }) {
   const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState();
   const navigate = useNavigate();
   const { currentUser } = useAuth();
+  const [sortOption, setSortOption] = useState("default");
 
   useEffect(() => {
     async function loadUsers() {
@@ -48,16 +51,35 @@ function UserList({ showBadges = false }) {
     <div className="user-list">
       {showBadges && (
         <>
-          <Box mb={2}>
-            <TextField 
+          <Box mb={2} mt={1}>
+            <TextField
+              fullWidth
+              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery}
               variant="outlined"
+              label="Search User"
             />
           </Box>
           <Box mb={2}>
-            <FormControl 
-              variant="outlined"
-            />
+            <FormControl fullWidth variant="outlined">
+              <InputLabel id="sort-label">Sort by:</InputLabel>
+              <Select
+                labelId="sort-label"
+                value={sortOption}
+                label="Sort by:"
+                onChange={(e) => setSortOption(e.target.value)}
+              >
+                <MenuItem value="default">Default</MenuItem>
+                <MenuItem value="post">Post Count</MenuItem>
+                <MenuItem value="name">Name</MenuItem>
+              </Select>
+            </FormControl>
           </Box>
+          <Typography>
+            There {filteredUsers.length === 1 ? "is" : "are"}{" "}
+            <strong>{filteredUsers.length}</strong>{" "}
+            {filteredUsers.length === 1 ? "user" : "users"}
+          </Typography>
         </>
       )}
       <List component="nav">

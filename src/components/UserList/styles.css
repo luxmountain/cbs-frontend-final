@@ -22,3 +22,27 @@
     justify-content: space-between;
     width: 100%;
 }
+
+.setting-btn {
+    bottom: 1rem;
+    right: 1rem;
+    position: absolute;
+}
+
+.show-list-btn {
+    bottom: 1rem;
+    left: 1rem;
+    position: absolute;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.sort-select{
+    margin-left: 1rem;
+}
