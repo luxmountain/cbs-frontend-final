@@ -21,7 +21,7 @@ import { useAuth } from "../../context/AuthContext";
 
 function UserList({ showBadges = false }) {
   const [users, setUsers] = useState([]);
-  const [searchQuery, setSearchQuery] = useState();
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const [sortOption, setSortOption] = useState("default");
@@ -30,10 +30,7 @@ function UserList({ showBadges = false }) {
     async function loadUsers() {
       const data = await models.userListModel();
       if (Array.isArray(data)) {
-        const sortedUsers = data.sort(
-          (a, b) => (b.photoCount || 0) - (a.photoCount || 0)
-        );
-        setUsers(sortedUsers);
+        setUsers(data);
       } else {
         console.error("userListModel returned non-array data:", data);
       }
@@ -41,9 +38,21 @@ function UserList({ showBadges = false }) {
     loadUsers();
   }, []);
 
-  const filteredUsers = currentUser
-    ? users.filter((user) => user._id !== currentUser._id)
-    : users;
+  const sortedUsers = [...users].sort((a, b) => {
+    if(sortOption === "post")
+      return (b.photoCount || 0) - (a.photoCount || 0);
+    else if(sortOption === "name")
+      return (a.first_name + " " + a.last_name).localeCompare(
+        b.first_name + " " + b.last_name
+      )
+    return 0;
+  })
+
+  const filteredUsers = sortedUsers.filter(
+    (user) => 
+      currentUser?._id !== user._id &&
+    `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   if (!filteredUsers.length) return <div>No users found.</div>;
 
